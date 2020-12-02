@@ -1,3 +1,4 @@
+import instantiateTable from "../view/table.js";
 class FileSystem {
 
   initialize() {
@@ -7,41 +8,33 @@ class FileSystem {
 
   attachListeners() {
     downloadContacts.addEventListener('click', () => {
-      this.getTabledata();
+      this.checkTableData();
     });
   }
 
   hasEntries() {
     const downloadContact = document.querySelector(".download-content");
     if(tabelaContatos.children.length > 0) {
-      console.dir(tabelaContatos);
       downloadContact.classList.remove("d-none");
     } else {
-      console.dir(tabelaContatos);
       downloadContact.classList.add("d-none");
     }
   }
 
   private
 
-  getTabledata() {
-    const elements = tabelaContatos.querySelectorAll("td:not([class])");
-    const mapped = Array.from(elements).map(el => el.innerText);
+  checkTableData() {
+    let toSend;
+    const entries = instantiateTable.listEntries();
     const type = Array.from(document.forms[1].elements)
-      .find(el => el.checked).value.toLowerCase() || "json";
-    const group = [];
-    mapped.forEach((item, ind, arr) => {
-      if (ind % 2 == 0 || ind === 0) {
-        group.push([arr[ind], arr[ind + 1]]);
-      }
-    })
-    let toSend
-    if(type === 'json') {
-      toSend = JSON.stringify(Object.fromEntries(group));
-    } else {
-      toSend = `${[...group].join('\n')}`;
-    }
+    .find(el => el.checked).value.toLowerCase() || "json";
 
+    if(type === 'json') {
+      toSend = JSON.stringify(Object.fromEntries(entries));
+    } else {
+      toSend = `${[...entries].join('\n')}`;
+    }
+    
     this.downloadTabledata(toSend, type);
   }
 

@@ -1,4 +1,4 @@
-import contact from './contacts.js';
+import contact from '../controller/contactController.js';
 
 class Form {
   constructor(form) {

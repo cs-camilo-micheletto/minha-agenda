@@ -1,4 +1,4 @@
-import triggerAlert from '../alert.js';
+import triggerAlert from './alert.js';
 
 
 class Util {

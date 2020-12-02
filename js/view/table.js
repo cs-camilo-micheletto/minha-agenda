@@ -1,4 +1,4 @@
-import contact from './contacts.js';
+import contact from '../controller/contactController.js';
 
 class Table {
   constructor(table) {
@@ -22,6 +22,32 @@ class Table {
         inputTelefone.focus()
       }
     });
+  }
+
+  insertEntries({name, tel}) {
+    const tableEntry = `<tr>
+      <td>${name}</td>
+      <td>${tel}</td>
+      <td class="edit"><i class="fas fa-edit"></i></td>
+      <td class="delete"><i class="fas fa-trash"></i></td>
+    </tr>`;
+    
+    this.table.innerHTML += tableEntry;
+  }
+
+  listEntries() {
+    const elements = tabelaContatos.querySelectorAll("td:not([class])");
+    const mapped = Array.from(elements).map(el => el.innerText);
+
+    const group = [];
+
+    mapped.forEach((item, ind, arr) => {
+      if (ind % 2 == 0 || ind === 0) {
+        group.push([arr[ind], arr[ind + 1]]);
+      }
+    });
+
+    return group;
   }
 }
 

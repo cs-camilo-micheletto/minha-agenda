@@ -1,13 +1,21 @@
-import localStorageHelper from './utils/utils.js';
-import triggerAlert from './alert.js';
-import fs from './fileSystem.js';
+import localStorageHelper from '../utils/utils.js';
+import triggerAlert from '../utils/alert.js';
+import fs from '../utils/fileSystem.js';
+import Contact from '../model/Contact.js';
+import instantiateTable from '../view/table.js';
 
 
-class Contact {
+
+
+class ContactList {
   constructor(table) {
     this.table = table;
   }
 
+  /**
+   * 
+   * @param {Array} contact
+   */
   save(contact) { 
     const telephone = contact[1].length > 0;
     const name = contact[0].length > 0;
@@ -38,28 +46,23 @@ class Contact {
     fs.hasEntries();
   }
 
-  new([name, tel]) {
-    const tableEntry = `<tr>
-      <td>${name}</td>
-      <td>${tel}</td>
-      <td class="edit"><i class="fas fa-edit"></i></td>
-      <td class="delete"><i class="fas fa-trash"></i></td>
-    </tr>`;
-    
-    this.table.innerHTML += tableEntry;
+  new(contact) {
+    instantiateTable.insertEntries(contact);
   }
 
   index() {
     localStorageHelper.refresh();
-    localStorageHelper.load()
-      .forEach(contact => {
-        this.new(contact)
-        console.log(`Loaded ${contact}`);
-      });
+    const locals = localStorageHelper.load();
+    console.log(locals)
+    locals.forEach(contact => {
+      const newContact =  new Contact(contact);
+      this.new(newContact);
+      console.log(`Loaded ${newContact.name}`);
+    });
   }
 }
 
-const contact = new Contact(tabelaContatos);
+const contact = new ContactList(tabelaContatos);
 
 export default contact;
 
